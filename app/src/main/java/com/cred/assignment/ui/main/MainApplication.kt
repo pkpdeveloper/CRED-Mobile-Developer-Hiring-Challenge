@@ -1,5 +1,6 @@
 package com.cred.assignment.ui.main
 
+import androidx.multidex.MultiDex
 import com.cred.assignment.di.app.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -16,5 +17,9 @@ class MainApplication : DaggerApplication() {
         return appComponent
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        MultiDex.install(this)
+    }
 
 }

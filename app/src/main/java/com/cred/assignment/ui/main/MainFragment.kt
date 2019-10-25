@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cred.assignment.R
+import com.cred.assignment.event.SongItemClickEvent
 import com.cred.assignment.network.ApiService
 import com.cred.assignment.network.response.Song
 import com.cred.assignment.presenter.main.MainPresenter
+import com.cred.assignment.ui.base.BaseEventFragment
 import com.cred.assignment.view.main.MainView
-import dagger.android.support.DaggerFragment
+import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-class MainFragment : DaggerFragment(), MainView {
+
+class MainFragment : BaseEventFragment(), MainView, SongsAdapter.OnItemClickListener {
     private lateinit var recycleView: RecyclerView
     private lateinit var emptyTextView: TextView
     private lateinit var loadingView: View
@@ -45,6 +47,7 @@ class MainFragment : DaggerFragment(), MainView {
             adapter = songsAdapter
         }
         presenter.setView(this)
+        songsAdapter.setOnItemClickListener(this)
         presenter.loadData(apiService)
 
     }
@@ -64,5 +67,9 @@ class MainFragment : DaggerFragment(), MainView {
     override fun onError() {
         emptyTextView.visibility = View.VISIBLE
         emptyTextView.text = getString(R.string.load_data_error)
+    }
+
+    override fun onItemClicked(song: Song) {
+        EventBus.getDefault().post(SongItemClickEvent(song))
     }
 }
