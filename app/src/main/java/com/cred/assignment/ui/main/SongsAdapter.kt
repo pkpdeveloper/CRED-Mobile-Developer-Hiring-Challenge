@@ -3,7 +3,6 @@ package com.cred.assignment.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -30,20 +29,23 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.ProductHolder>() {
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
-        val song = songsList?.get(position)
-        song?.let {
-            holder.tvTitle.text = it.song
-            holder.tvArtists.text = it.artists
-            Glide.with(holder.ivThumb)
-                .load(it.cover_image)
-                .centerCrop()
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(holder.ivThumb)
+        songsList?.let { songsList ->
+            val song = songsList[position]
+            song.let {
+                holder.tvTitle.text = it.song
+                holder.tvArtists.text = it.artists
+                Glide.with(holder.ivThumb)
+                    .load(it.cover_image)
+                    .centerCrop()
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(holder.ivThumb)
 
-            holder.itemView.setOnClickListener {
-                onItemClickListener?.onItemClicked(song)
+                holder.itemView.setOnClickListener {
+                    onItemClickListener?.onItemClicked(song, songsList)
+                }
             }
         }
+
     }
 
     fun setData(songsList: List<Song>) {
@@ -62,6 +64,6 @@ class SongsAdapter : RecyclerView.Adapter<SongsAdapter.ProductHolder>() {
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(song: Song)
+        fun onItemClicked(song: Song, songsList: List<Song>)
     }
 }

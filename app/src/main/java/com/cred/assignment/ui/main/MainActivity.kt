@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.cred.assignment.R
 import com.cred.assignment.event.SongItemClickEvent
 import com.cred.assignment.ui.base.BaseEventActivity
-import com.cred.assignment.ui.player.PlayerFragment
+import com.cred.assignment.ui.player.ViewPagerFragment
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -29,7 +29,8 @@ class MainActivity : BaseEventActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSongItemClickEvent(event: SongItemClickEvent) {
-        addFragment(PlayerFragment.newInstance(event.song))
+        //  addFragment(PlayerFragment.newInstance(event.song))
+        addFragment(ViewPagerFragment.newInstance(event.song, event.songsList))
     }
 
     private fun addFragment(fragment: Fragment, isBackStack: Boolean = true) {

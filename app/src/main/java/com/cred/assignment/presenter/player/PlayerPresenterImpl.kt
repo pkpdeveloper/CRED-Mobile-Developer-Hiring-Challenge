@@ -23,12 +23,12 @@ class PlayerPresenterImpl : PlayerPresenter, Player.EventListener {
     }
 
     override fun setMediaSource(exoPlayer: ExoPlayer, mediaSource: MediaSource) {
-        exoPlayer.playWhenReady = true
         exoPlayer.prepare(mediaSource)
         exoPlayer.addListener(this)
     }
 
     override fun startPlaying(exoPlayer: ExoPlayer) {
+        exoPlayer.playWhenReady = true
     }
 
     override fun stopPlaying(exoPlayer: ExoPlayer) {

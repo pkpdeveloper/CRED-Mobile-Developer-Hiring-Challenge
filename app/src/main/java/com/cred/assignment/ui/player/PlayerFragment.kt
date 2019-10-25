@@ -22,6 +22,7 @@ import javax.inject.Inject
 typealias ExoPlayerView = com.google.android.exoplayer2.ui.PlayerView
 
 class PlayerFragment : DaggerFragment(), PlayerView {
+    private var mediaSource: MediaSource? = null
     @Inject
     internal lateinit var presenter: PlayerPresenter
 
@@ -50,18 +51,25 @@ class PlayerFragment : DaggerFragment(), PlayerView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         playerView = view.findViewById(R.id.playerView)
+        playerView.player = exoPlayer
         presenter.setView(this)
         val args = arguments
         val song = args?.getParcelable<Song>("song")
         song?.let {
-            playerView.player = exoPlayer
-            presenter.setMediaSource(exoPlayer, buildMediaSource(song))
+            mediaSource = buildMediaSource(it)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mediaSource?.let {
+            presenter.setMediaSource(exoPlayer, it)
             presenter.startPlaying(exoPlayer)
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         presenter.stopPlaying(exoPlayer)
     }
 

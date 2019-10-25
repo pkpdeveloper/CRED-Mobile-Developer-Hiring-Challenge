@@ -69,7 +69,7 @@ class MainFragment : BaseEventFragment(), MainView, SongsAdapter.OnItemClickList
         emptyTextView.text = getString(R.string.load_data_error)
     }
 
-    override fun onItemClicked(song: Song) {
-        EventBus.getDefault().post(SongItemClickEvent(song))
+    override fun onItemClicked(song: Song, songsList: List<Song>) {
+        EventBus.getDefault().post(SongItemClickEvent(song, songsList))
     }
 }
